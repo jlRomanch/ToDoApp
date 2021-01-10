@@ -1,20 +1,21 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.renderers import TemplateHTMLRenderer
 
+from .serializer import TaskDetailSerializer, TaskListSerializer
 from .models import Task
-from .forms import *
 
 
-def index(request):
-    tasks = Task.objects.all()
+class TaskCreateView(generics.CreateAPIView):
+    serializer_class = TaskDetailSerializer
 
-    form = TaskForm()
 
-    if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('/')
+class TaskListView(generics.ListAPIView):
+    serializer_class = TaskListSerializer
+    queryset = Task.objects.all()
 
-    context = {'tasks': tasks, 'form': form}
-    return render(request, 'tasks/index.html', context)
+
+class TaskDetailView(generics.RetrieveAPIView):
+    serializer_class = TaskDetailSerializer
+    queryset = Task.objects.all()
