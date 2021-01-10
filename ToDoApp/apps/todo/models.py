@@ -5,7 +5,7 @@ class Task(models.Model):
 
     title = models.CharField(max_length=255)
     is_completed = models.BooleanField(default=False)
-    deadline = models.DateTimeField(auto_now=True)
+    deadline = models.DateTimeField()
 
     def __str__(self):
         return self.title
