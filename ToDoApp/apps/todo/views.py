@@ -14,6 +14,10 @@ class TaskCreateView(generics.CreateAPIView):
 class TaskListView(generics.ListAPIView):
     serializer_class = TaskListSerializer
     queryset = Task.objects.all()
+    renderer_classes = [TemplateHTMLRenderer]
+
+    def get(self, request, *args, **kwargs):
+        return Response({"Tasks": self.queryset}, template_name='index.html')
 
 
 class TaskDetailView(generics.RetrieveAPIView):
